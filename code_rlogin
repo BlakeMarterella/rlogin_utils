@@ -1,0 +1,32 @@
+#! /bin/bash
+
+#
+# rlogin vscode + ssh launcher
+# ---
+# Author: Blake Marterella
+# Date: January 27, 2024
+# 
+
+
+# Script to open visual studio code inside of rlogin
+# Base URI
+
+pid="marterella"
+base_uri="vscode-remote://ssh-remote+rlogin.cs.vt.edu/home/ugrads/nonmajors/marterella/"
+
+# Check if an argument was provided
+if [ $# -eq 0 ]; then
+    # No path provided; use the root directory
+    code --folder-uri "${base_uri}"
+	ssh rlogin.cs.vt.edu
+else
+    # Path provided by the user
+    path=$1
+
+    # Use the variable in the command
+    code --folder-uri "${base_uri}${path}"
+
+	# SSH into rlogin and change directory
+	ssh -t rlogin.cs.vt.edu "cd ${path} && bash -l"
+fi
+
